@@ -10,33 +10,36 @@ public:
 private:
 	INT size_; // snake's length
 	struct Segment {
-		explicit Segment(INT posX = 0, INT posY = 0) : posX_(posX), posY_(posY) {}
+        explicit Segment(INT posX = 0, INT posY = 0) : posX_(posX), posY_(posY) {}
 		INT posX_, posY_; // segment's position.
 	};
 	std::vector<Segment> body; // coordinates of entire snake. Head is [0]
+    direction dir_;
 };
 
 
-Snake::Snake(INT size, INT posX, INT posY) : Visible('S', posX, posY), size_(size), body()
+Snake::Snake(INT size, INT posX, INT posY)
+    : Visible('S', posX, posY), size_(size), body(), dir_(right)
 {
 	for(INT i = 0; i != size_; ++i)
 		body.emplace_back(posX - i, posY);
 }
 
-
-void Snake::show() const // test (console)
+void Snake::show() const // test
 {
 	auto i = body.begin();
 	std::cout << 'S';
 	for( ; i != body.end(); ++i)
-		std::cout << '[' << i->posX_ << ',' << i->posY_ << ']';
+        std::cout << '[' << i->posX_ << ',' << i->posY_ << ']';
 	std::cout.put('\n');
 }
 
-
 void Snake::move(direction dir)
 {
-	Visible::move(dir);
+    if(dir_ == dir)
+        return;
+    dir_ = dir;
+	Visible::move(dir_);
 	Segment tmp = body[0]; // buffer
 	body[0] = Segment(getX(), getY());
 	auto i = body.begin();

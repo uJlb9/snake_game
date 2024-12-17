@@ -9,7 +9,7 @@ private:
     INT width_, height_;
 };
 
-void GameArea::show() const
+void GameArea::show() const // test
 {
     for(INT y = 0; y != height_; ++y) {
         for (INT x = 0; x != width_; ++x)
