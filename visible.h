@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector> // snake.cpp
+#include <list> // snake.cpp
 #include "typedefs.h"
 #include "defaults.h"
 
