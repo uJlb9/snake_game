@@ -2,7 +2,7 @@
 
 class GameArea : public Visible {
 public:
-    GameArea(INT posX, INT posY,INT width = D_AREA_SIZE_X, INT height = D_AREA_SIZE_Y)
+    GameArea(INT posX, INT posY, INT width = D_AREA_SIZE_X, INT height = D_AREA_SIZE_Y)
         : Visible('.', posX, posY), width_(width), height_(height) {}
     void show() const  override;
 private:
