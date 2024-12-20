@@ -2,7 +2,7 @@
 
 class Apple : public Visible {
 public:
-	Apple(INT posX, INT posY) : Visible('A', posX, posY) {}
+	Apple(INT x, INT y) : Visible('A', x, y) {}
 };
 
 

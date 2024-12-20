@@ -4,39 +4,40 @@
 #include <iostream>
 #include <vector> // snake.cpp
 #include <list> // snake.cpp
-#include "typedefs.h"
+#include "types.h"
 #include "defaults.h"
 
 class Visible {
 public:
-	static Visible * makeSnake(); // SNAKE.CPP
+    static Visible * makeSnake(INT size, INT x, INT y); // SNAKE.CPP
 	static Visible * makeApple(INT x, INT y); // APPLE.CPP
 	static Visible * makeGameArea(INT x, INT y, INT w, INT h); //GAME_AREA.CPP
 
-	Visible(char symbol, INT posX, INT posY) : symbol_(symbol), posX_(posX), posY_(posY) {}
+	Visible(CHAR symbol, INT x, INT y) : symbol_(symbol), pos_() { pos_.push_back(Pos(x, y)); }
 	virtual ~Visible() = default;
-	virtual void move(direction);
-	[[nodiscard]] virtual INT getX() const { return posX_; }
-	[[nodiscard]] virtual INT getY() const { return posY_; }
+	virtual void move(DIRECTION);
+	[[nodiscard]] virtual const CONTAINER& getPos() const { return pos_; }
+    virtual CONTAINER & setPos() { return pos_; }
 private:
-	char symbol_;
-	INT posX_, posY_;
+	CHAR symbol_;
+	CONTAINER pos_;
 };
 
-inline void Visible::move(direction dir)
+inline void Visible::move(DIRECTION dir)
 {
+    auto i = pos_.begin();
 	switch(dir) {
 	case left:
-		--posX_;
+		--(i->x);
 		break;
 	case right:
-		++posX_;
+		++(i->x);
 		break;
 	case up:
-		--posY_;
+		--(i->y);
 		break;
 	case down:
-		++posY_;
+		++(i->y);
 	}
 }
 
