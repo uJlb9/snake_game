@@ -15,7 +15,6 @@ public:
 
 	Visible(char symbol, INT posX, INT posY) : symbol_(symbol), posX_(posX), posY_(posY) {}
 	virtual ~Visible() = default;
-	virtual void show() const;
 	virtual void move(direction);
 	[[nodiscard]] virtual INT getX() const { return posX_; }
 	[[nodiscard]] virtual INT getY() const { return posY_; }
@@ -23,11 +22,6 @@ private:
 	char symbol_;
 	INT posX_, posY_;
 };
-
-inline void Visible::show() const
-{
-	std::cout.put(symbol_);
-}
 
 inline void Visible::move(direction dir)
 {

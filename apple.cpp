@@ -5,6 +5,7 @@ public:
 	Apple(INT posX, INT posY) : Visible('A', posX, posY) {}
 };
 
+
 //
 // VISIBLE.H
 //

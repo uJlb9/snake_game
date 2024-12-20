@@ -8,8 +8,9 @@ int main() {
     scene.push_back(field);
     scene.push_back(snake);
     
-    for(auto i : scene)
-        i->show();
     
+    
+    delete snake;
+    delete field;
     return 0;
 }

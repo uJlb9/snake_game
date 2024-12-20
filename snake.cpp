@@ -5,7 +5,6 @@ public:
 	explicit Snake(INT size = D_SNAKE_SIZE,
 				   INT posX = D_SNAKE_X,
 				   INT posY = D_SNAKE_Y);
-	void show() const override;
 	void move(direction dir) override;
 private:
 	INT size_; // snake's length
@@ -25,14 +24,6 @@ Snake::Snake(INT size, INT posX, INT posY)
 		body.emplace_back(posX - i, posY);
 }
 
-void Snake::show() const // test
-{
-	auto i = body.begin();
-	std::cout << 'S';
-	for( ; i != body.end(); ++i)
-        std::cout << '[' << i->posX_ << ',' << i->posY_ << ']';
-	std::cout.put('\n');
-}
 
 void Snake::move(direction dir)
 {
@@ -46,6 +37,7 @@ void Snake::move(direction dir)
 	for(++i; i != body.end(); ++i)
 		std::swap(*i, tmp);
 }
+
 
 //
 // VISIBLE.H
