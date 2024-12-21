@@ -18,7 +18,9 @@ int main() {
     ascii.render();
     
     snake->move(right);
-    apple->move(left);
+    data.calculate();
+    ascii.render();
+    snake->move(right);
     data.calculate();
     ascii.render();
     
