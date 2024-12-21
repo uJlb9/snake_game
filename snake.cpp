@@ -4,7 +4,6 @@ class Snake : public Visible {
 public:
 	explicit Snake(INT x = 0, INT y = 0, INT length = D_SNAKE_SIZE);
 	void move(DIRECTION dir) override;
-    void show() const override;
     INT getWidth() const override { return size; }
     INT getHeight() const override { return 1; }
 private:
@@ -23,19 +22,14 @@ Snake::Snake(INT x, INT y, INT length)
 
 void Snake::move(DIRECTION dir)
 {
-    if(direction == dir)
+    if(dir == direction * -1)
         return;
     direction = dir;
-	
-}
-
-void Snake::show() const // test
-{
-    std::cout << "snake size: " << size << "\n";
-    auto i = getXY().begin();
-    for( ; i != getXY().end(); ++i)
-        std::cout << '[' << i->x << ',' << i->y << ']';
-    std::cout << '\n';
+	Coordinates tmp = *(setXY().begin());
+    Visible::move(direction);
+    auto i = setXY().begin();
+    for(++i; i != setXY().end(); ++i)
+        std::swap(tmp, *i);
 }
 
 //

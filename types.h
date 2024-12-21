@@ -3,7 +3,7 @@
 
 using INT = int;
 using CHAR = char;
-enum DIRECTION { left, right, up, down };
+enum DIRECTION { left = -1, right = 1, up = 10, down = -10 };
 
 struct Coordinates {
     INT x, y;

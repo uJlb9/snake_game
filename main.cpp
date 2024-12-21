@@ -4,7 +4,7 @@
 int main() {
     CONTAINER_VISIBLE scene;
     auto field = Visible::makeGameArea(0, 0, 7, 9);
-    auto snake = Visible::makeSnake(3, 3, 3);
+    auto snake = Visible::makeSnake(3, 3, 4);
     auto apple = Visible::makeApple(6, 6);
     
     scene.push_back(field);
@@ -12,6 +12,15 @@ int main() {
     scene.push_back(apple);
     
     AsciiRenderer ascii_renderer(scene);
+    ascii_renderer.calculate();
+    ascii_renderer.render();
+    snake->move(right);
+    ascii_renderer.calculate();
+    ascii_renderer.render();
+    snake->move(up);
+    ascii_renderer.calculate();
+    ascii_renderer.render();
+    snake->move(up);
     ascii_renderer.calculate();
     ascii_renderer.render();
     

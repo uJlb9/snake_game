@@ -45,13 +45,15 @@ void AsciiRenderer::calculate()
             matrix[i->y][i->x] = s->getChar();
 }
 
-void AsciiRenderer::render()
+void AsciiRenderer::render() // test
 {
     for(INT y = 0; y < height; ++y) {
+        std::cout.put('\t');
         for (INT x = 0; x < width; ++x)
             std::cout << matrix[y][x];
         std::cout.put('\n');
     }
+    std::cout.put('\n');
 }
 
 #endif //SNAKE_GAME_ASCII_RENDER_H

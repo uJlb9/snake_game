@@ -17,7 +17,6 @@ public:
 	virtual ~Visible() = default;
 	
     virtual void move(DIRECTION);
-    virtual void show() const; // test
     virtual CONTAINER_COORDINATES & setXY() { return coordinates; }
 	virtual const CONTAINER_COORDINATES & getXY() const { return coordinates; }
     virtual CHAR getChar() const { return symbol; }
@@ -49,12 +48,6 @@ inline void Visible::move(DIRECTION dir)
 	case down:
 		++(i->y);
 	}
-}
-
-inline void Visible::show() const // test
-{
-    auto i = getXY().begin();
-    std::cout << symbol << '[' << i->x << ',' << i->y << "]\n";
 }
 
 #endif // SNAKE_VISIBLE_H

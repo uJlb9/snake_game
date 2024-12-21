@@ -3,7 +3,6 @@
 class GameArea : public Visible {
 public:
     GameArea(INT x, INT y, INT width = D_AREA_SIZE_X, INT height = D_AREA_SIZE_Y);
-    void show() const override;
     INT getWidth() const override { return width; }
     INT getHeight() const override { return height; }
 private:
@@ -23,12 +22,6 @@ GameArea::GameArea(INT x, INT y, INT width, INT height)
             Visible::setXY().push_back(Coordinates(X, Y));
         }
     }
-}
-
-void GameArea::show() const {
-    for(auto i : Visible::getXY())
-        std::cout << '[' << i.x << ',' << i.y << ']';
-    std::cout.put('\n');
 }
 
 //
