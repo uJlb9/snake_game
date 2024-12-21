@@ -13,19 +13,29 @@ public:
 	static Visible * makeApple(INT x, INT y); // APPLE.CPP
 	static Visible * makeGameArea(INT x, INT y, INT w, INT h); //GAME_AREA.CPP
 
-	Visible(CHAR symbol, INT x, INT y) : symbol_(symbol), pos_() { pos_.push_back(Pos(x, y)); }
+	Visible(CHAR ch, INT x, INT y);
 	virtual ~Visible() = default;
-	virtual void move(DIRECTION);
-	[[nodiscard]] virtual const CONTAINER& getPos() const { return pos_; }
-    virtual CONTAINER & setPos() { return pos_; }
+	
+    virtual void move(DIRECTION);
+    virtual void show() const; // test
+    virtual CONTAINER_COORDINATES & setXY() { return coordinates; }
+	virtual const CONTAINER_COORDINATES & getXY() const { return coordinates; }
+    virtual CHAR getChar() const { return symbol; }
+    virtual INT getWidth() const = 0;
+    virtual INT getHeight() const = 0;
 private:
-	CHAR symbol_;
-	CONTAINER pos_;
+    CHAR symbol;
+	CONTAINER_COORDINATES coordinates;
 };
+
+inline Visible::Visible(CHAR ch, INT x, INT y) : symbol(ch), coordinates()
+{
+    coordinates.push_back(Coordinates(x, y));
+}
 
 inline void Visible::move(DIRECTION dir)
 {
-    auto i = pos_.begin();
+    auto i = coordinates.begin();
 	switch(dir) {
 	case left:
 		--(i->x);
@@ -39,6 +49,12 @@ inline void Visible::move(DIRECTION dir)
 	case down:
 		++(i->y);
 	}
+}
+
+inline void Visible::show() const // test
+{
+    auto i = getXY().begin();
+    std::cout << symbol << '[' << i->x << ',' << i->y << "]\n";
 }
 
 #endif // SNAKE_VISIBLE_H
