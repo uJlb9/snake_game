@@ -1,4 +1,5 @@
 #include "visible.h"
+#include "calculate_scene.h"
 #include "ascii_render.h"
 
 int main() {
@@ -6,23 +7,20 @@ int main() {
     auto field = Visible::makeGameArea(0, 0, 7, 9);
     auto snake = Visible::makeSnake(3, 3, 4);
     auto apple = Visible::makeApple(6, 6);
-    
     scene.push_back(field);
     scene.push_back(snake);
     scene.push_back(apple);
     
-    AsciiRenderer ascii_renderer(scene);
-    ascii_renderer.calculate();
-    ascii_renderer.render();
+    Data data(scene);
+    AsciiRenderer ascii(data);
+    
+    data.calculate();
+    ascii.render();
+    
     snake->move(right);
-    ascii_renderer.calculate();
-    ascii_renderer.render();
-    snake->move(up);
-    ascii_renderer.calculate();
-    ascii_renderer.render();
-    snake->move(up);
-    ascii_renderer.calculate();
-    ascii_renderer.render();
+    apple->move(left);
+    data.calculate();
+    ascii.render();
     
     delete apple;
     delete snake;

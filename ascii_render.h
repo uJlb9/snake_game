@@ -2,55 +2,23 @@
 #define SNAKE_GAME_ASCII_RENDER_H
 
 #include "visible.h"
+#include "calculate_scene.h"
 #include <iostream>
 
 class AsciiRenderer {
 public:
-    explicit AsciiRenderer(const CONTAINER_VISIBLE & scene);
-    ~AsciiRenderer();
-    void calculate();
+    explicit AsciiRenderer(Data & d) : data(&d) {}
     void render();
 private:
-    CONTAINER_VISIBLE const *scene_ptr;
-    CHAR **matrix;
-    INT width, height;
+    Data *data;
 };
-
-AsciiRenderer::AsciiRenderer(const CONTAINER_VISIBLE & scene)
-    : scene_ptr(&scene), matrix(nullptr)
-{
-    for(auto i : *scene_ptr) {
-        if(i->getChar() == '.') {
-            width = i->getWidth();
-            height = i->getHeight();
-            break;
-        }
-    }
-    matrix = new char *[height]{};
-    for(INT y = 0; y < height; ++y)
-        *(matrix + y) = new char[width]{};
-}
-
-AsciiRenderer::~AsciiRenderer()
-{
-    for(INT y = 0; y != height; ++y)
-        delete [] *(matrix + y);
-    delete [] matrix;
-}
-
-void AsciiRenderer::calculate()
-{
-    for(auto s : *scene_ptr)
-        for(auto i = s->getXY().begin(); i != s->getXY().end(); ++i)
-            matrix[i->y][i->x] = s->getChar();
-}
 
 void AsciiRenderer::render() // test
 {
-    for(INT y = 0; y < height; ++y) {
-        std::cout.put('\t');
-        for (INT x = 0; x < width; ++x)
-            std::cout << matrix[y][x];
+    for(INT y = 0; y < data->getHeight(); ++y) {
+        std::cout << "\t\t\t\t";
+        for (INT x = 0; x < data->getWidth(); ++x)
+            std::cout << data->getMatrix()[y][x];
         std::cout.put('\n');
     }
     std::cout.put('\n');

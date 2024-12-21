@@ -20,6 +20,7 @@ public:
     virtual CONTAINER_COORDINATES & setXY() { return coordinates; }
 	virtual const CONTAINER_COORDINATES & getXY() const { return coordinates; }
     virtual CHAR getChar() const { return symbol; }
+    virtual void setChar(CHAR ch) { symbol = ch; }
     virtual INT getWidth() const = 0;
     virtual INT getHeight() const = 0;
 private:

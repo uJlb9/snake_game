@@ -26,9 +26,9 @@ void Snake::move(DIRECTION dir)
         return;
     direction = dir;
 	Coordinates tmp = *(setXY().begin());
-    Visible::move(direction);
+    Visible::move(direction); // move the head
     auto i = setXY().begin();
-    for(++i; i != setXY().end(); ++i)
+    for(++i; i != setXY().end(); ++i) // move the body
         std::swap(tmp, *i);
 }
 
