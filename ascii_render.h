@@ -1,7 +1,7 @@
 #ifndef SNAKE_GAME_ASCII_RENDER_H
 #define SNAKE_GAME_ASCII_RENDER_H
 
-#include "visible.h"
+#include "gameobject.h"
 #include "calculate_scene.h"
 #include <iostream>
 
@@ -18,7 +18,7 @@ void AsciiRenderer::render() // test
     for(INT y = 0; y < data->getHeight(); ++y) {
         std::cout << "\t\t\t\t";
         for (INT x = 0; x < data->getWidth(); ++x)
-            std::cout << data->getMatrix()[y][x];
+            std::cout.put(data->getMatrix()[y][x]);
         std::cout.put('\n');
     }
     std::cout.put('\n');

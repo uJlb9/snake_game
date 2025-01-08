@@ -1,37 +1,36 @@
 #ifndef SNAKE_GAME_CALCULATE_SCENE_H
 #define SNAKE_GAME_CALCULATE_SCENE_H
 
-#include "visible.h"
+#include "gameobject.h"
 #include <iostream>
 
 class Data {
 public:
-    explicit Data(const CONTAINER_VISIBLE & scene);
+    explicit Data(CONTAINER_VISIBLE & scene);
     ~Data();
-    INT getWidth() { return width; }
-    INT getHeight() { return height; }
+    INT getWidth() const { return width; }
+    INT getHeight() const { return height; }
     CHAR **& getMatrix() { return matrix; }
-    
     void calculate();
-    bool outside(const Coordinates& segment) const;
-    void jump(Coordinates& segment);
-    bool collision(const Coordinates& segment) const;
+    void jump(Coordinates& segment) const;
+    void check_collision() const;
 private:
-    CONTAINER_VISIBLE const *scene_ptr;
+    CONTAINER_VISIBLE *scene_ptr;
     CHAR **matrix;
     INT width, height;
 };
 
-Data::Data(const CONTAINER_VISIBLE & scene)
+Data::Data(CONTAINER_VISIBLE & scene)
     : scene_ptr(&scene), matrix(nullptr)
 {
-    for(auto i : *scene_ptr) {
-        if(i->getChar() == '.') {
-            width = i->getWidth();
-            height = i->getHeight();
+    for(auto s : *scene_ptr) {
+        if(s->getType() == t_field) {
+            width = s->getWidth();
+            height = s->getHeight();
             break;
         }
     }
+    // create an empty matrix
     matrix = new char *[height]{};
     for(INT y = 0; y < height; ++y)
         *(matrix + y) = new char[width]{};
@@ -39,6 +38,8 @@ Data::Data(const CONTAINER_VISIBLE & scene)
 
 Data::~Data()
 {
+    for(auto & i : *scene_ptr)
+        delete i;
     for(INT y = 0; y != height; ++y)
         delete [] *(matrix + y);
     delete [] matrix;
@@ -46,35 +47,85 @@ Data::~Data()
 
 void Data::calculate()
 {
-    for(auto s : *scene_ptr)
-        for(auto i = s->setXY().begin(); i != s->setXY().end(); ++i) {
-            if(outside(*i))
-                jump(*i);
-            matrix[i->y][i->x] = s->getChar();
+    for(auto obj = scene_ptr->begin(); obj != scene_ptr->end(); ++obj) {
+        if ((*obj)->getCond() == DEAD) {
+            delete *obj;
+            obj = scene_ptr->erase(obj);
+            continue;
         }
+        for (auto &i: (*obj)->setXY()) {
+            jump(i);
+            matrix[i.y][i.x] = (*obj)->getCondChar();
+        }
+    }
+    check_collision();
+    for(auto & obj : *scene_ptr) {
+        Type type = obj->getType();
+        if(type == t_field) {
+            continue;
+        } else {
+            for(auto & i : obj->getXY())
+                matrix[i.y][i.x] = obj->getCondChar();
+        }
+    }
 }
 
-bool Data::outside(const Coordinates &segment) const
+void Data::jump(Coordinates &segment) const
 {
-    return(segment.x >= width || segment.x < 0 || segment.y >= height || segment.y < 0);
-}
-
-void Data::jump(Coordinates &segment)
-{
-    if(segment.x >= width)
+    if(segment.x >= width) {
         segment.x = 0;
-    if(segment.x < 0)
+        return;
+    } else if(segment.x < 0) {
         segment.x = width - 1;
-    if(segment.y >= height)
+        return;
+    } else if(segment.y >= height) {
         segment.y = 0;
-    if(segment.y < 0)
+        return;
+    } else if(segment.y < 0) {
         segment.y = height - 1;
+        return;
+    }
 }
 
-bool Data::collision(const Coordinates &segment) const
+void Data::check_collision() const
 {
     
-    return false;
+    GameObject *snake;
+    CONTAINER_COORDINATES::const_iterator head, tale;
+    INT head_x, head_y, tale_x, tale_y;
+    
+    for(auto & obj : *scene_ptr) {
+        if(obj->getType() != t_snake)
+            continue;
+        snake = obj;
+        head = obj->getXY().begin();
+        tale = std::prev(obj->getXY().end());
+        break;
+    }
+    
+    for(auto & obj : *scene_ptr) {
+        Type type = obj->getType();
+        if(type == t_field)
+            continue;
+        if(type == t_snake) {
+            for(auto i = std::next(head); i != tale; ++i) {
+                if(head->x == i->x && head->y == i->y) { // collision with the tale
+                    snake->setCond(DEAD);
+                    return;
+                }
+            }
+        }
+        if(type == t_apple) {
+            auto apple = obj->getXY().begin();
+            if(head->x == apple->x && head->y == apple->y) { // collision with an apple
+                obj->setCond(HIDDEN);
+            } else if(tale->x == apple->x && tale->y == apple->y) {
+                obj->setCond(DEAD);
+                snake->resize(1, *obj->setXY().begin());
+            }
+        }
+    }
+    
 }
 
 #endif //SNAKE_GAME_CALCULATE_SCENE_H

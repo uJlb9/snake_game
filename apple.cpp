@@ -1,19 +1,18 @@
-#include "visible.h"
+#include "gameobject.h"
 
-class Apple : public Visible {
+class Apple : public GameObject {
 public:
-	Apple(INT x, INT y) : Visible('A', x, y) {}
+	Apple(INT x, INT y) : GameObject(t_apple, conditions_apple, x, y) {}
     INT getWidth() const override { return 1; }
     INT getHeight() const override { return 1; }
 private:
- // CHAR symbol;
- // CONTAINER_COORDINATES coordinates;
+
 };
 
 //
 // VISIBLE.H
 //
-Visible * Visible::makeApple(INT x, INT y)
+GameObject * GameObject::makeApple(INT x, INT y)
 {
 	return new Apple(x, y);
 }
