@@ -1,5 +1,5 @@
-#ifndef SNAKE_VISIBLE_H
-#define SNAKE_VISIBLE_H
+#ifndef SNAKE_GAME_OBJECT_H
+#define SNAKE_GAME_OBJECT_H
 
 #include <iostream>
 #include <vector> // snake.cpp
@@ -45,16 +45,20 @@ inline void GameObject::move(Direction dir)
 	switch(dir) {
 	case left:
 		--(i->x);
+        this->setCond(MOVING_LEFT);
 		break;
 	case right:
 		++(i->x);
+        this->setCond(MOVING_RIGHT);
 		break;
 	case up:
 		--(i->y);
+        this->setCond(MOVING_UP);
 		break;
 	case down:
 		++(i->y);
+        this->setCond(MOVING_DOWN);
 	}
 }
 
-#endif // SNAKE_VISIBLE_H
+#endif // SNAKE_GAME_OBJECT_H

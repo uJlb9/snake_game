@@ -1,4 +1,6 @@
-#include "gameobject.h"
+#include "game_object.h"
+
+static const char *conditions_apple{"Aaa"};
 
 class Apple : public GameObject {
 public:
@@ -6,11 +8,10 @@ public:
     INT getWidth() const override { return 1; }
     INT getHeight() const override { return 1; }
 private:
-
 };
 
 //
-// VISIBLE.H
+// GAME_OBJECT.H
 //
 GameObject * GameObject::makeApple(INT x, INT y)
 {

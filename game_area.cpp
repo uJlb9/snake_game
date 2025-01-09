@@ -1,4 +1,6 @@
-#include "gameobject.h"
+#include "game_object.h"
+
+static const char *conditions_field{"..."};
 
 class GameArea : public GameObject {
 public:
@@ -23,7 +25,7 @@ GameArea::GameArea(INT x, INT y, INT w, INT h)
 }
 
 //
-// VISIBLE.H
+// GAME_OBJECT.H
 //
 GameObject * GameObject::makeGameArea(INT x, INT y, INT w, INT h)
 {

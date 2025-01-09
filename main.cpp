@@ -1,9 +1,9 @@
-#include "gameobject.h"
+#include "game_object.h"
 #include "calculate_scene.h"
 #include "ascii_render.h"
 
 int main() {
-    CONTAINER_VISIBLE scene;
+    CONTAINER_GAME_OBJECTS scene;
     auto field = GameObject::makeGameArea();
     auto snake = GameObject::makeSnake();
     

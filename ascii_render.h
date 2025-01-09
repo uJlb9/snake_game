@@ -1,7 +1,7 @@
 #ifndef SNAKE_GAME_ASCII_RENDER_H
 #define SNAKE_GAME_ASCII_RENDER_H
 
-#include "gameobject.h"
+#include "game_object.h"
 #include "calculate_scene.h"
 #include <iostream>
 

@@ -1,12 +1,12 @@
 #ifndef SNAKE_GAME_CALCULATE_SCENE_H
 #define SNAKE_GAME_CALCULATE_SCENE_H
 
-#include "gameobject.h"
+#include "game_object.h"
 #include <iostream>
 
 class Data {
 public:
-    explicit Data(CONTAINER_VISIBLE & scene);
+    explicit Data(CONTAINER_GAME_OBJECTS & scene);
     ~Data();
     INT getWidth() const { return width; }
     INT getHeight() const { return height; }
@@ -15,12 +15,12 @@ public:
     void jump(Coordinates& segment) const;
     void check_collision() const;
 private:
-    CONTAINER_VISIBLE *scene_ptr;
+    CONTAINER_GAME_OBJECTS *scene_ptr;
     CHAR **matrix;
     INT width, height;
 };
 
-Data::Data(CONTAINER_VISIBLE & scene)
+Data::Data(CONTAINER_GAME_OBJECTS & scene)
     : scene_ptr(&scene), matrix(nullptr)
 {
     for(auto s : *scene_ptr) {
@@ -61,12 +61,10 @@ void Data::calculate()
     check_collision();
     for(auto & obj : *scene_ptr) {
         Type type = obj->getType();
-        if(type == t_field) {
+        if(type == t_field)
             continue;
-        } else {
-            for(auto & i : obj->getXY())
-                matrix[i.y][i.x] = obj->getCondChar();
-        }
+        for(auto & i : obj->getXY())
+            matrix[i.y][i.x] = obj->getCondChar();
     }
 }
 

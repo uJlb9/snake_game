@@ -1,4 +1,7 @@
-#include "gameobject.h"
+#include "game_object.h"
+
+static const char *conditions_snake{"o,x<>^v"};
+class Body;
 
 class Snake : public GameObject {
 public:
@@ -19,7 +22,7 @@ private:
 Snake::Snake(INT x, INT y, INT length, Direction dir)
     : GameObject(t_snake, conditions_snake, x, y), size(length), direction(dir)
 {
-    for(INT i = 1; i != size; ++i)
+    for(INT i = 1; i != length; ++i)
         GameObject::setXY().push_back(Coordinates(x - i, y));
 }
 
@@ -43,7 +46,7 @@ void Snake::resize(INT n, Coordinates &xy)
 }
 
 //
-// VISIBLE.H
+// GAME_OBJECT.H
 //
 GameObject * GameObject::makeSnake(INT x, INT y, INT length)
 {
