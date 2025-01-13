@@ -3,6 +3,8 @@
 
 #include "game_object.h"
 #include <iostream>
+#include <algorithm>
+#include <cstring>
 
 class Data {
 public:
@@ -10,13 +12,13 @@ public:
     ~Data();
     INT getWidth() const { return width; }
     INT getHeight() const { return height; }
-    CHAR **& getMatrix() { return matrix; }
+    CHAR * const & getMatrix() const { return matrix; }
     void calculate();
-    void jump(Coordinates& segment) const;
+    void jump(Segment& segment) const;
     void check_collision() const;
 private:
     CONTAINER_GAME_OBJECTS *scene_ptr;
-    CHAR **matrix;
+    CHAR *matrix;
     INT width, height;
 };
 
@@ -30,45 +32,33 @@ Data::Data(CONTAINER_GAME_OBJECTS & scene)
             break;
         }
     }
-    // create an empty matrix
-    matrix = new char *[height]{};
-    for(INT y = 0; y < height; ++y)
-        *(matrix + y) = new char[width]{};
+    matrix = new char [height*width]{}; // create an empty matrix
 }
 
 Data::~Data()
 {
     for(auto & i : *scene_ptr)
         delete i;
-    for(INT y = 0; y != height; ++y)
-        delete [] *(matrix + y);
     delete [] matrix;
 }
 
 void Data::calculate()
 {
+    check_collision();
     for(auto obj = scene_ptr->begin(); obj != scene_ptr->end(); ++obj) {
-        if ((*obj)->getCond() == DEAD) {
+        if((*obj)->getCond() == DELETE) {
             delete *obj;
             obj = scene_ptr->erase(obj);
             continue;
         }
-        for (auto &i: (*obj)->setXY()) {
-            jump(i);
-            matrix[i.y][i.x] = (*obj)->getCondChar();
+        for (auto &seg: (*obj)->setXY()) {
+            jump(seg);
+            matrix[seg.y * width + seg.x] = (*obj)->getCondChar();
         }
-    }
-    check_collision();
-    for(auto & obj : *scene_ptr) {
-        Type type = obj->getType();
-        if(type == t_field)
-            continue;
-        for(auto & i : obj->getXY())
-            matrix[i.y][i.x] = obj->getCondChar();
     }
 }
 
-void Data::jump(Coordinates &segment) const
+void Data::jump(Segment &segment) const
 {
     if(segment.x >= width) {
         segment.x = 0;
@@ -89,8 +79,7 @@ void Data::check_collision() const
 {
     
     GameObject *snake;
-    CONTAINER_COORDINATES::const_iterator head, tale;
-    INT head_x, head_y, tale_x, tale_y;
+    CONTAINER_BODY::const_iterator head, tale;
     
     for(auto & obj : *scene_ptr) {
         if(obj->getType() != t_snake)
@@ -106,11 +95,13 @@ void Data::check_collision() const
         if(type == t_field)
             continue;
         if(type == t_snake) {
+            if(snake->getCond() == DEAD) {
+                snake->setCond(DELETE);
+                continue;
+            }
             for(auto i = std::next(head); i != tale; ++i) {
-                if(head->x == i->x && head->y == i->y) { // collision with the tale
+                if(head->x == i->x && head->y == i->y) // collision with the tale
                     snake->setCond(DEAD);
-                    return;
-                }
             }
         }
         if(type == t_apple) {
@@ -118,7 +109,7 @@ void Data::check_collision() const
             if(head->x == apple->x && head->y == apple->y) { // collision with an apple
                 obj->setCond(HIDDEN);
             } else if(tale->x == apple->x && tale->y == apple->y) {
-                obj->setCond(DEAD);
+                obj->setCond(DELETE);
                 snake->resize(1, *obj->setXY().begin());
             }
         }

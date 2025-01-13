@@ -22,13 +22,14 @@ const INT MOVING_UP         {5};
 const INT MOVING_DOWN       {6};
 const INT DELETE            {9};
 
-struct Coordinates {
+struct Segment {
     INT x, y;
+    bool operator==(const Segment &other) const { return (x == other.x && y == other.y); }
 };
 
 class GameObject;
 
-using CONTAINER_COORDINATES = std::list<Coordinates>;
+using CONTAINER_BODY = std::vector<Segment>;
 using CONTAINER_GAME_OBJECTS = std::list<GameObject *>;
 
 #endif //SNAKE_TYPES_H

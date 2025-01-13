@@ -65,6 +65,8 @@ int main() {
     data.calculate();
     ascii.render();
     
-    
+    data.calculate();
+    ascii.render();
+
     return 0;
 }

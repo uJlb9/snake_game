@@ -15,10 +15,13 @@ private:
 
 void AsciiRenderer::render() // test
 {
-    for(INT y = 0; y < data->getHeight(); ++y) {
-        std::cout << "\t\t\t\t";
-        for (INT x = 0; x < data->getWidth(); ++x)
-            std::cout.put(data->getMatrix()[y][x]);
+    INT width = data->getWidth();
+    INT height = data->getHeight();
+    CHAR *matrix = data->getMatrix();
+    for(INT y = 0; y < height; ++y) {
+        for (INT x = 0; x < width; ++x) {
+            std::cout.put(matrix[y * width + x]);
+        }
         std::cout.put('\n');
     }
     std::cout.put('\n');

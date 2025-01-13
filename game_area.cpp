@@ -15,11 +15,9 @@ GameArea::GameArea(INT x, INT y, INT w, INT h)
     : GameObject(t_field, conditions_field, x, y), width(w), height(h),
       max_x(x + w - 1), max_y(y + h - 1)
 {
-    auto i= GameObject::setXY().begin();
-    i = GameObject::setXY().erase(i);
     for(INT Y = y; Y <= max_y; ++Y) {
         for(INT X = x; X <= max_x; ++X) {
-            GameObject::setXY().push_back(Coordinates(X, Y));
+            GameObject::setXY().push_back(Segment(X, Y));
         }
     }
 }

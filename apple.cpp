@@ -1,6 +1,6 @@
 #include "game_object.h"
 
-static const char *conditions_apple{"Aaa"};
+static const char *conditions_apple{"AOO______O"};
 
 class Apple : public GameObject {
 public:
