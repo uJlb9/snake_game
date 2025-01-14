@@ -2,13 +2,14 @@
 #define SNAKE_GAME_CALCULATE_SCENE_H
 
 #include "game_object.h"
+#include "game_field.h"
 #include <iostream>
 #include <algorithm>
 #include <cstring>
 
 class Data {
 public:
-    explicit Data(CONTAINER_GAME_OBJECTS & scene);
+    explicit Data(GameField & field, CONTAINER_GAME_OBJECTS & scene);
     ~Data();
     INT getWidth() const { return width; }
     INT getHeight() const { return height; }
@@ -17,22 +18,19 @@ public:
     void jump(Segment& segment) const;
     void check_collision() const;
 private:
+    GameField *field_ptr;
     CONTAINER_GAME_OBJECTS *scene_ptr;
     CHAR *matrix;
     INT width, height;
 };
 
-Data::Data(CONTAINER_GAME_OBJECTS & scene)
-    : scene_ptr(&scene), matrix(nullptr)
+Data::Data(GameField & field, CONTAINER_GAME_OBJECTS & scene)
+    : field_ptr(&field), scene_ptr(&scene), matrix(nullptr)
 {
-    for(auto s : *scene_ptr) {
-        if(s->getType() == t_field) {
-            width = s->getWidth();
-            height = s->getHeight();
-            break;
-        }
-    }
-    matrix = new char [height*width]{}; // create an empty matrix
+    width = field_ptr->getWidth();
+    height = field_ptr->getHeight();
+    matrix = new CHAR[width*height];
+    memcpy(matrix, field_ptr->getField(), width*height*sizeof(CHAR));
 }
 
 Data::~Data()
@@ -44,6 +42,7 @@ Data::~Data()
 
 void Data::calculate()
 {
+    memcpy(matrix, field_ptr->getField(), width*height*sizeof(CHAR));
     check_collision();
     for(auto obj = scene_ptr->begin(); obj != scene_ptr->end(); ++obj) {
         if((*obj)->getCond() == DELETE) {
@@ -92,8 +91,6 @@ void Data::check_collision() const
     
     for(auto & obj : *scene_ptr) {
         Type type = obj->getType();
-        if(type == t_field)
-            continue;
         if(type == t_snake) {
             if(snake->getCond() == DEAD) {
                 snake->setCond(DELETE);

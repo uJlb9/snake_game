@@ -6,7 +6,7 @@
 using INT = int;
 using CHAR = char;
 enum Direction { left = -100, right = 100, up = 200, down = -200 };
-enum Type { t_field, t_snake, t_apple };
+enum Type {t_snake, t_apple };
 
 struct Conditions {
     explicit Conditions(const char *statuses) : arr() { strcpy(arr, statuses); }

@@ -3,15 +3,14 @@
 #include "ascii_render.h"
 
 int main() {
+    GameField field;
     CONTAINER_GAME_OBJECTS scene;
-    auto field = GameObject::makeGameArea();
     auto snake = GameObject::makeSnake();
     
-    scene.push_back(field);
     scene.push_back(snake);
     scene.push_back(GameObject::makeApple(6, 3));
     
-    Data data(scene);
+    Data data(field, scene);
     AsciiRenderer ascii(data);
     
     data.calculate();

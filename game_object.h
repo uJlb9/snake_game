@@ -11,8 +11,6 @@ class GameObject {
 public:
     static GameObject * makeSnake(INT x = D_SNAKE_X, INT y = D_SNAKE_Y, INT size = D_SNAKE_SIZE); // SNAKE.CPP
 	static GameObject * makeApple(INT x, INT y); // APPLE.CPP
-	static GameObject * makeGameArea(INT x = 0, INT y = 0, INT w = D_AREA_SIZE_X, INT h = D_AREA_SIZE_Y);
-                                                                                        //GAME_AREA.CPP
 	GameObject(Type type, const char *str_conditions, INT x, INT y);
 	virtual ~GameObject() = default;
     virtual Type getType() const { return type; }
